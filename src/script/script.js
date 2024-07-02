@@ -151,10 +151,11 @@ checkoutBtn.addEventListener("click", () => {
             `${item.name} Quantidade:(${item.quantity}) Preço:R$ ${item.price}) | `
         )
     }).join("");
+
     const message = encodeURIComponent(cartItems);
     const phone = "5521975956657";
 
-    window.open(`https://wa.me/${phone}?/text=${message} Endereço: ${adressInput.value}`, "_blank");
+    window.open(`https://wa.me/${phone}?text=${message} Endereço: ${adressInput.value}`, "_blank");
 
     cart = [];
     updatecartModal();
