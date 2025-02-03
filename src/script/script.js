@@ -238,9 +238,11 @@ checkoutBtn.addEventListener("click", () => {
     return;
   }
 
+  // Pegando o valor das observações
+  const orderNotes = document.getElementById("order-notes").value;
+
   // Variável para armazenar a mensagem final
-  let message =
-    "*Pedido feito com sucesso! Seu devBurguer está chegando... 🍔🍟*\n\n";
+  let message = "*Pedido feito com sucesso! 🍔🍟*\n\n";
 
   let total = 0;
 
@@ -248,9 +250,12 @@ checkoutBtn.addEventListener("click", () => {
   cart.forEach((item) => {
     message += `*Produto:* ${item.name} 🍔\n`;
     message += `*Preço:* R$ ${item.price.toFixed(2)}\n`;
-    if (item.observations) {
+
+    // Verifica se há observações e as adiciona
+    if (item.observations && item.observations.trim() !== "") {
       message += `*Observações:* ${item.observations}\n`;
     }
+
     message += "\n";
     total += item.price; // Calcula o total
   });
@@ -260,9 +265,9 @@ checkoutBtn.addEventListener("click", () => {
 
   // Adiciona a mensagem sobre o método de pagamento
   if (paymentMethodSelect.value === "cartao") {
-    message += "*Pagamento:* realizado com cartão 💳.\n";
+    message += "*Forma de Pagamento:* realizado com cartão 💳.\n";
   } else if (paymentMethodSelect.value === "dinheiro") {
-    message += "*Pagamento:* realizado em dinheiro 💵.\n";
+    message += "*Forma de Pagamento:* realizado em dinheiro 💵.\n";
 
     // Se houver valor de troco, adiciona o valor digitado
     const trocoInput = document.getElementById("troco");
@@ -271,6 +276,11 @@ checkoutBtn.addEventListener("click", () => {
     if (trocoValue > 0 && !isNaN(trocoValue)) {
       message += `*Troco para:* R$ ${trocoValue.toFixed(2)}\n`;
     }
+  }
+
+  // Verifica se há observação geral (do campo de observações)
+  if (orderNotes && orderNotes.trim() !== "") {
+    message += `\n*Observações:* ${orderNotes}\n`;
   }
 
   // Adiciona o endereço de entrega
