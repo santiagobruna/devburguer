@@ -190,13 +190,8 @@ adressInput.addEventListener("input", () => {
 });
 
 // Exibir ou ocultar campo de troco
-
 paymentMethodSelect.addEventListener("change", (e) => {
-  if (e.target.value === "dinheiro") {
-    trocoInputDiv.classList.remove("hidden");
-  } else {
-    trocoInputDiv.classList.add("hidden");
-  }
+  toggleTrocoInput();
 });
 
 // Finalizar pedido
@@ -264,9 +259,10 @@ checkoutBtn.addEventListener("click", () => {
   message += `*Total:* R$ ${total.toFixed(2)}\n`;
 
   // Adiciona a mensagem sobre o método de pagamento
-  if (paymentMethodSelect.value === "cartao") {
-    message += "*Forma de Pagamento:* realizado com cartão 💳.\n";
-  } else if (paymentMethodSelect.value === "dinheiro") {
+  const paymentMethod = paymentMethodSelect.value;
+  if (paymentMethod === "cartao") {
+    message += "*Forma de Pagamento:* realizado com cartão de crédito 💳.\n";
+  } else if (paymentMethod === "dinheiro") {
     message += "*Forma de Pagamento:* realizado em dinheiro 💵.\n";
 
     // Se houver valor de troco, adiciona o valor digitado
@@ -276,6 +272,10 @@ checkoutBtn.addEventListener("click", () => {
     if (trocoValue > 0 && !isNaN(trocoValue)) {
       message += `*Troco para:* R$ ${trocoValue.toFixed(2)}\n`;
     }
+  } else if (paymentMethod === "pix") {
+    message += "*Forma de Pagamento:* realizado via Pix 📱.\n";
+  } else if (paymentMethod === "debito") {
+    message += "*Forma de Pagamento:* realizado com cartão de débito 💳.\n"; // Adicionando a opção de débito
   }
 
   // Verifica se há observação geral (do campo de observações)
@@ -297,6 +297,21 @@ checkoutBtn.addEventListener("click", () => {
   cart = [];
   updateCartModal();
 });
+
+// Função para exibir mensagens de erro ou sucesso
+function showToast(text, backgroundColor) {
+  Toastify({
+    text,
+    duration: 3000,
+    close: true,
+    gravity: "top",
+    position: "left",
+    stopOnFocus: true,
+    style: {
+      background: backgroundColor,
+    },
+  }).showToast();
+}
 
 // Verificar se o restaurante está aberto ao carregar a página
 const spanItem = document.getElementById("date-span");
